@@ -548,7 +548,7 @@ document.querySelectorAll('#mobileMenu a').forEach(a => a.addEventListener('clic
 
 const FAQ = [
   { topic:'areas', keys:['area','areas','atua','servico','serviços','o que voces fazem','o que vocês fazem','o que a jm faz','quais sao os servicos','quais são os serviços','o que jm oferece','que tipo de servico'],
-    a:['Trabalhamos com 4 áreas: elétrica, alarmes, câmeras e ar condicionado — instalação, manutenção e material pra cada uma delas.','A JM cobre elétrica, alarmes, câmeras e ar condicionado. É só me falar qual área te interessa que eu detalho.'] },
+    a:['Trabalhamos com 4 áreas: elétrica, alarmes, câmeras e ar condicionado — instalação, manutenção e material pra cada uma delas.','A JM cobre elétrica, alarmes, câmeras e ar condicionado. É só me falar qual área te interessa que eu detalho.','Cuidamos de elétrica, alarme, câmera e ar condicionado — praticamente tudo, menos o boleto da luz 😅 Qual dessas te interessa?'] },
   { topic:'eletrica', keys:['eletrica','elétrica','eletricista','fiacao','fiação','fiaçao','quadro de disjuntor','quadro eletrico','padrao de entrada','padrão de entrada','curto circuito','curto-circuito','chuveiro','disjuntor','falta de energia','queda de energia','fio','fiacao queimada','instalacao eletrica','instalação elétrica'],
     a:['Na parte elétrica fazemos instalação residencial e comercial, troca de quadro, padrão de entrada, manutenção e laudos. Quer que eu já puxe o orçamento no WhatsApp?'] },
   { topic:'alarmes', keys:['alarme','alarmes','sensor','monitoramento','central de alarme','alarme residencial','alarme comercial','sensor de presenca','sensor de presença','sirene'],
@@ -558,7 +558,7 @@ const FAQ = [
   { topic:'ar', keys:['ar condicionado','split','ar-condicionado','btus','higienizacao','higienização','inverter','nao esta gelando','não está gelando','gelando pouco','vazando agua','vazando água','pingando','manutencao de ar','manutenção de ar','instalar ar'],
     a:['Instalamos, damos manutenção e higienizamos split e multi-split, residencial e comercial. Sabe mais ou menos quantos BTUs o seu aparelho tem?'] },
   { topic:'pagamento', keys:['pagamento','pagar','forma de pagamento','cartao','cartão','pix','parcela','parcelado','boleto','transferencia','transferência','debito','débito','credito','crédito','a vista','à vista'],
-    a:['O pagamento é combinado direto no WhatsApp na hora de fechar o pedido ou serviço — aceitamos Pix e outras formas a combinar.'] },
+    a:['O pagamento é combinado direto no WhatsApp na hora de fechar o pedido ou serviço — aceitamos Pix e outras formas a combinar.','Aceitamos Pix e outras formas — combina tudo direto no WhatsApp na hora de fechar. Nada de pombo-correio, fica tranquilo.'] },
   { topic:'prazo', keys:['prazo','entrega','quando fica','demora','tempo de','quanto tempo','chega quando','prazo de entrega','prazo de instalacao','prazo de instalação','quanto demora'],
     a:['O prazo varia por tipo de serviço ou produto. Me conta o que você precisa que eu já te encaminho pro WhatsApp com essa pergunta certinha.'] },
   { topic:'regiao', keys:['atende','regiao','região','cidade','onde fica','local','vem ate','vem até','atende minha cidade','atende meu bairro','voces atendem','vocês atendem','area de atendimento'],
@@ -585,19 +585,21 @@ const FAQ = [
     a:['Isso parece coisa pra resolver rápido — melhor já chamar a equipe no WhatsApp pra te atender direto, principalmente se envolver risco (cheiro de queimado, fio exposto, curto). Quer que eu te leve pra lá agora?'] },
   { topic:'trabalhe_conosco', keys:['vaga','emprego','trabalhar com voces','trabalhar com vocês','curriculo','currículo','contratando','vaga de emprego'],
     a:['Pra assuntos de vaga e currículo, o melhor caminho é chamar direto no WhatsApp ou mandar mensagem no Instagram @jmeletrica.cpv.'] },
+  { topic:'piada', keys:['conta uma piada','me conta uma piada','sabe alguma piada','conta uma piada eletrica','faz rir','me faz rir','sabe uma piada'],
+    a:['Por que o eletricista nunca perde no truco? Porque ele sempre sabe quando tem um "curto" escondido. 😄','Qual é o super-herói mais econômico? O Homem de Ferro, ele nem usa disjuntor.','Sabe por que a lâmpada foi mal na escola? Porque ela vivia apagada. Enfim, voltando ao assunto — posso ajudar com mais alguma coisa?'] },
 ];
 
 const GREETINGS = [
   { keys:['bom dia','boa tarde','boa noite','oi','oie','oii','oiii','oioi','ola','olá','eae','opa','e ai','e aí','fala','falae','salve','coe','suave'],
-    a:['Oi! Tudo bem? Em que posso ajudar — elétrica, alarmes, câmeras ou ar condicionado?','Olá! Como posso ajudar hoje?','Oi, seja bem-vindo! No que posso ajudar?'] },
+    a:['Oi! Tudo bem? Em que posso ajudar — elétrica, alarmes, câmeras ou ar condicionado?','Olá! Como posso ajudar hoje?','Oi, seja bem-vindo! No que posso ajudar?','E aí! Chegou na hora certa, tava aqui só zerando o disjuntor 😄 Como posso ajudar?'] },
   { keys:['tudo bem','tudo bom','como vai','beleza contigo','como voce esta','como você está','como vc esta','como vc ta','voce esta bem','você está bem','vc ta bem','de boa','tudo certo','tudo tranquilo','tudo joia','tudo suave','como anda','como ta indo','como tá indo','firmeza'],
-    a:['Tudo certo por aqui, obrigado por perguntar! E você, precisa de ajuda com algo específico?','Tô bem, valeu por perguntar! Em que posso te ajudar?'] },
+    a:['Tudo certo por aqui, obrigado por perguntar! E você, precisa de ajuda com algo específico?','Tô bem, valeu por perguntar! Em que posso te ajudar?','Suave, correndo 220V hoje 😄 E você, precisa de alguma coisa?'] },
   { keys:['obrigad','valeu','vlw','blz','beleza','entendi','show','maravilha','perfeito','brigado','brigada','agradecido','agradecida','gratidao','gratidão','ajudou muito','thanks'],
-    a:['Disponha! Qualquer outra dúvida é só perguntar.','Fico à disposição. Precisando de mais alguma coisa é só chamar.','Que bom que ajudou! Mais alguma coisa?'] },
+    a:['Disponha! Qualquer outra dúvida é só perguntar.','Fico à disposição. Precisando de mais alguma coisa é só chamar.','Que bom que ajudou! Mais alguma coisa?','Isso aí! Fico feliz em ajudar — grita se precisar de mais alguma coisa.'] },
   { keys:['tchau','ate mais','até mais','falou','flw','ate logo','até logo','fui','indo','ate breve','até breve','nos falamos','bjs','abraço'],
-    a:['Até mais! Se precisar, é só voltar aqui ou chamar no WhatsApp.'] },
+    a:['Até mais! Se precisar, é só voltar aqui ou chamar no WhatsApp.','Falou! Qualquer coisa tô aqui, sempre ligado (literalmente).'] },
   { keys:['quem e voce','quem é você','voce e um robo','você é um robô','voce e humano','é um bot','vc e ia','vc tem nome','qual seu nome','qual e seu nome','quem te criou','vc e um chatbot','você é um chatbot','vc e real'],
-    a:['Sou o Watt, o assistente virtual da JM — feito pra tirar dúvidas rápidas. Pra falar com alguém da equipe de verdade, te levo direto pro WhatsApp.'] },
+    a:['Sou o Watt, o assistente virtual da JM — feito pra tirar dúvidas rápidas. Pra falar com alguém da equipe de verdade, te levo direto pro WhatsApp.','Watt aqui, seu assistente virtual — o nome já é uma piadinha de elétrica, percebeu? 😄 Posso ajudar com dúvidas rápidas, e pra falar com gente de verdade te levo pro WhatsApp.'] },
   { keys:['obg','ok','blz entao','tá bom','ta bom'],
     a:['Tranquilo! Qualquer coisa é só chamar.'] },
 ];
@@ -607,7 +609,10 @@ const CHAT_QUICK = ['Quais áreas vocês atendem?', 'Como funciona o pagamento?'
 const CLARIFY_MSGS = [
   'Não peguei bem essa — pode explicar de outro jeito? Posso falar sobre elétrica, alarmes, câmeras, ar condicionado, catálogo, pagamento e orçamento.',
   'Hmm, não entendi direito. Você quer saber sobre algum dos nossos serviços ou sobre um produto do catálogo?',
+  'Essa me deixou meio "sem sinal" aqui 😅 Reformula pra mim? Posso ajudar com elétrica, alarmes, câmeras, ar condicionado ou o catálogo.',
 ];
+
+function toggleChat(){
 
 function toggleChat(){
   const panel = document.getElementById('chatPanel');
