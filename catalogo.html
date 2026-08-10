@@ -57,6 +57,12 @@
   .icon-btn{position:relative; background:transparent; border:1px solid var(--line-soft); color:var(--white); width:42px; height:42px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:18px;}
   .icon-btn:hover{border-color:var(--yellow);}
   .cart-count{position:absolute; top:-5px; right:-5px; background:var(--yellow); color:#0a0a0b; font-size:10.5px; font-weight:800; width:18px; height:18px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:var(--font-body);}
+  .cart-count.bump{animation:cartBump .45s ease;}
+  @keyframes cartBump{0%{transform:scale(1);} 35%{transform:scale(1.6);} 100%{transform:scale(1);}}
+  #cartBtn.bump{animation:cartShake .45s ease;}
+  @keyframes cartShake{0%,100%{transform:rotate(0);} 20%{transform:rotate(-12deg);} 40%{transform:rotate(10deg);} 60%{transform:rotate(-6deg);} 80%{transform:rotate(4deg);}}
+  .add-btn.added{background:#3ee06a !important;}
+  .fly-dot{position:fixed; width:10px; height:10px; border-radius:50%; background:var(--yellow); z-index:400; pointer-events:none; transition:all .55s cubic-bezier(.3,.8,.4,1);}
   .burger{display:flex; background:none; border:none; color:var(--white); font-size:24px; cursor:pointer;}
   @media(min-width:900px){ nav.links{display:flex;} .burger{display:none;} }
   #mobileMenu{display:none; flex-direction:column; background:var(--black-soft); border-top:1px solid var(--line-soft);}
@@ -274,7 +280,7 @@
       <a class="icon-btn" href="https://wa.me/551232241268" target="_blank" title="WhatsApp" aria-label="WhatsApp">
         <svg class="icon" viewBox="0 0 24 24"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.62 1.44l-.475.354a1 1 0 0 0-.302 1.214 14 14 0 0 0 6.23 6.31Z"/></svg>
       </a>
-      <button class="icon-btn" onclick="openCart()" title="Carrinho" aria-label="Carrinho">
+      <button class="icon-btn" id="cartBtn" onclick="openCart()" title="Carrinho" aria-label="Carrinho">
         <svg class="icon" viewBox="0 0 24 24"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
         <span class="cart-count" id="cartCount">0</span>
       </button>
@@ -468,7 +474,7 @@ function renderProducts(){
         </select>` : ''}
         <div class="product-footer">
           <span class="price" id="price-${p.id}">${fmt(currentPrice(p))}</span>
-          <button class="add-btn" onclick="addToCart('${p.id}')">Adicionar</button>
+          <button class="add-btn" onclick="addToCart('${p.id}', this)">Adicionar</button>
         </div>
       </div>
     </div>
@@ -486,7 +492,7 @@ function updatePrice(id){
 function getCart(){ try { return JSON.parse(localStorage.getItem('jm_cart')||'[]'); } catch(e){ return []; } }
 function setCart(c){ localStorage.setItem('jm_cart', JSON.stringify(c)); renderCart(); }
 
-function addToCart(id){
+function addToCart(id, btnEl){
   const p = PRODUCTS.find(x => x.id === id);
   let variantIdx = null, variantLabel = null;
   if (p.variants){
@@ -500,6 +506,41 @@ function addToCart(id){
   else cart.push({cartId, id, variantLabel, qty:1});
   setCart(cart);
   showToast('Adicionado ao carrinho');
+  bumpCartIcon();
+  if (btnEl) flyToCart(btnEl);
+}
+
+function bumpCartIcon(){
+  const badge = document.getElementById('cartCount');
+  const btn = document.getElementById('cartBtn');
+  badge.classList.remove('bump'); void badge.offsetWidth; badge.classList.add('bump');
+  btn.classList.remove('bump'); void btn.offsetWidth; btn.classList.add('bump');
+}
+
+function flyToCart(btnEl){
+  const start = btnEl.getBoundingClientRect();
+  const cartBtn = document.getElementById('cartBtn');
+  const end = cartBtn.getBoundingClientRect();
+  const dot = document.createElement('div');
+  dot.className = 'fly-dot';
+  dot.style.left = (start.left + start.width / 2 - 5) + 'px';
+  dot.style.top = (start.top + start.height / 2 - 5) + 'px';
+  document.body.appendChild(dot);
+  requestAnimationFrame(() => {
+    dot.style.left = (end.left + end.width / 2 - 5) + 'px';
+    dot.style.top = (end.top + end.height / 2 - 5) + 'px';
+    dot.style.opacity = '0.2';
+    dot.style.transform = 'scale(.4)';
+  });
+  setTimeout(() => dot.remove(), 600);
+
+  const original = btnEl.textContent;
+  btnEl.textContent = '✓ Adicionado';
+  btnEl.classList.add('added');
+  setTimeout(() => {
+    btnEl.textContent = original;
+    btnEl.classList.remove('added');
+  }, 900);
 }
 
 function removeFromCart(cartId){
@@ -712,8 +753,6 @@ const CLARIFY_MSGS = [
   'Hmm, não entendi direito. Você quer saber sobre algum dos nossos serviços ou sobre um produto do catálogo?',
   'Essa me deixou meio "sem sinal" aqui 😅 Reformula pra mim? Posso ajudar com elétrica, alarmes, câmeras, ar condicionado ou o catálogo.',
 ];
-
-function toggleChat(){
 
 function toggleChat(){
   const panel = document.getElementById('chatPanel');

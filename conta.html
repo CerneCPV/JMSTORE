@@ -367,6 +367,29 @@
             </div>
             <p id="phoneMsg" style="display:none; font-size:.78rem; color:#ff8a7a; margin-top:8px;"></p>
           </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+            <h4 style="font-size:.85rem; text-transform:uppercase; letter-spacing:.06em; color:var(--yellow-dim); font-family:var(--font-mono); margin:0;">Meus dados</h4>
+            <button class="cat-chip mono" style="cursor:pointer; border:1px solid var(--line-soft); background:none;" id="btnEditarDados" onclick="toggleEditDados()">Editar</button>
+          </div>
+          <div id="dadosView" style="margin-bottom:26px;">
+            <div class="area-row"><span class="idx mono">01</span><h3 style="font-weight:600;">Nome</h3><span class="tag-mini" id="viewNome">—</span></div>
+            <div class="area-row"><span class="idx mono">02</span><h3 style="font-weight:600;">E-mail</h3><span class="tag-mini" id="viewEmail">—</span></div>
+            <div class="area-row"><span class="idx mono">03</span><h3 style="font-weight:600;">Telefone</h3><span class="tag-mini" id="viewTelefone">—</span></div>
+          </div>
+          <div id="dadosEdit" style="display:none; flex-direction:column; gap:12px; margin-bottom:26px;">
+            <div>
+              <label class="lbl mono" style="display:block; margin-bottom:6px;">Nome</label>
+              <input id="editNome" type="text" style="width:100%; background:var(--black); border:1px solid var(--line-soft); color:var(--white); padding:10px 12px; border-radius:7px; font-size:.88rem;">
+            </div>
+            <div>
+              <label class="lbl mono" style="display:block; margin-bottom:6px;">Telefone</label>
+              <input id="editTelefone" type="tel" style="width:100%; background:var(--black); border:1px solid var(--line-soft); color:var(--white); padding:10px 12px; border-radius:7px; font-size:.88rem;">
+            </div>
+            <button class="btn btn-primary" style="align-self:flex-start; padding:10px 20px; font-size:12px;" onclick="salvarDados()">Salvar alterações</button>
+            <p id="dadosMsg" style="display:none; font-size:.78rem; color:#ff8a7a;"></p>
+          </div>
+
           <h4 style="font-size:.85rem; text-transform:uppercase; letter-spacing:.06em; color:var(--yellow-dim); font-family:var(--font-mono); margin-bottom:14px;">Meus pedidos</h4>
           <div id="dashPedidos"><p style="font-size:.85rem; color:var(--text-dimmer);">Nenhum pedido por aqui ainda. Compras feitas pelo catálogo ou orçamentos fechados no WhatsApp vão aparecer aqui assim que ativarmos essa parte.</p></div>
         </div>
@@ -535,8 +558,6 @@ const CLARIFY_MSGS = [
   'Hmm, não entendi direito. Você quer saber sobre algum dos nossos serviços ou sobre um produto do catálogo?',
   'Essa me deixou meio "sem sinal" aqui 😅 Reformula pra mim? Posso ajudar com elétrica, alarmes, câmeras, ar condicionado ou o catálogo.',
 ];
-
-function toggleChat(){
 
 function toggleChat(){
   const panel = document.getElementById('chatPanel');
@@ -781,7 +802,41 @@ async function showDashboard(user){
   document.getElementById('dashNome').textContent = 'Olá, ' + nome;
   document.getElementById('dashContato').textContent = user.email + (telefone ? ' · ' + telefone : '');
   document.getElementById('phonePrompt').style.display = telefone ? 'none' : 'block';
+
+  document.getElementById('viewNome').textContent = nome;
+  document.getElementById('viewEmail').textContent = user.email;
+  document.getElementById('viewTelefone').textContent = telefone || 'não informado';
+  document.getElementById('editNome').value = nome;
+  document.getElementById('editTelefone').value = telefone;
+
   carregarPedidos(user.id);
+}
+
+function toggleEditDados(){
+  const editing = document.getElementById('dadosEdit').style.display === 'flex';
+  document.getElementById('dadosEdit').style.display = editing ? 'none' : 'flex';
+  document.getElementById('dadosView').style.display = editing ? 'block' : 'none';
+  document.getElementById('btnEditarDados').textContent = editing ? 'Editar' : 'Cancelar';
+  document.getElementById('dadosMsg').style.display = 'none';
+}
+
+async function salvarDados(){
+  const nome = document.getElementById('editNome').value.trim();
+  const telefone = document.getElementById('editTelefone').value.trim();
+  const msg = document.getElementById('dadosMsg');
+  if (!nome || !telefone){
+    msg.textContent = 'Preencha nome e telefone.';
+    msg.style.display = 'block';
+    return;
+  }
+  const { data, error } = await sb.auth.updateUser({ data: { full_name: nome, phone: telefone } });
+  if (error){
+    msg.textContent = 'Não deu pra salvar, tenta de novo.';
+    msg.style.display = 'block';
+    return;
+  }
+  toggleEditDados();
+  await showDashboard(data.user);
 }
 
 async function salvarTelefone(){
