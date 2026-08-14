@@ -36,6 +36,9 @@ exports.handler = async (event) => {
           pending: `${siteUrl}/catalogo.html?pagamento=pendente`,
         },
         auto_return: 'approved',
+        // Avisa o Mercado Pago pra onde mandar a notificação assim que o
+        // pagamento mudar de status (aprovado, rejeitado, etc).
+        notification_url: `${siteUrl}/.netlify/functions/mp-webhook`,
       }),
     });
 
