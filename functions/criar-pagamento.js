@@ -1,4 +1,4 @@
-// Netlify Function: cria uma preferência de pagamento no Mercado Pago
+// Netlify Function: cria uma preferência de pagamento no Mercado Pago,
 // e devolve o link de checkout (init_point) pro navegador redirecionar.
 
 exports.handler = async (event) => {
