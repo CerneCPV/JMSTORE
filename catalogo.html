@@ -642,6 +642,8 @@ async function pagarComMercadoPago(){
 
       if (session) {
 
+        const meta = session.user.user_metadata || {};
+
         const { data: pedidoCriado, error: pedidoError } =
           await sb
             .from('pedidos')
@@ -650,6 +652,11 @@ async function pagarComMercadoPago(){
               itens: itensPedido,
               total: total,
               status: 'aguardando pagamento',
+              // guarda uma cópia dos dados de contato no momento da compra,
+              // assim o webhook não depende de consultar o Auth depois
+              cliente_nome: meta.full_name || meta.name || null,
+              cliente_email: session.user.email || null,
+              cliente_telefone: meta.phone || null,
             })
             .select('id')
             .single();
