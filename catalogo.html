@@ -579,8 +579,8 @@ async function checkout(){
   const msg = encodeURIComponent(lines.join('\n'));
   window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`, '_blank');
 }
-
 async function pagarComMercadoPago(){
+
   const cart = getCart();
 
   if (cart.length === 0){
@@ -589,18 +589,25 @@ async function pagarComMercadoPago(){
   }
 
   const btn = document.getElementById('btnPagar');
+
   btn.disabled = true;
+
   const originalText = btn.textContent;
+
   btn.textContent = 'Gerando pagamento...';
 
   const itensPedido = [];
+
   let total = 0;
 
   cart.forEach(item => {
+
     const p = PRODUCTS.find(x => x.id === item.id);
+
     if (!p) return;
 
     const price = cartItemPrice(item);
+
     total += price * item.qty;
 
     const label = item.variantLabel
@@ -612,49 +619,148 @@ async function pagarComMercadoPago(){
       qtd: item.qty,
       preco: price
     });
+
   });
 
-  try {
-    try {
-      const { data } = await sb.auth.getSession();
 
-      if (data.session){
-        await sb.from('pedidos').insert({
-          user_id: data.session.user.id,
-          itens: itensPedido,
-          total: total,
-          status: 'aguardando pagamento',
-        });
+  try {
+
+    /*
+     * =====================================================
+     * 1. CRIA O PEDIDO NO SUPABASE
+     * =====================================================
+     */
+
+    let pedidoId = null;
+
+    try {
+
+      const { data: sessionData } =
+        await sb.auth.getSession();
+
+      const session = sessionData?.session;
+
+      if (session) {
+
+        const { data: pedidoCriado, error: pedidoError } =
+          await sb
+            .from('pedidos')
+            .insert({
+              user_id: session.user.id,
+              itens: itensPedido,
+              total: total,
+              status: 'aguardando pagamento',
+            })
+            .select('id')
+            .single();
+
+        if (pedidoError) {
+
+          console.error(
+            'Erro ao criar pedido no Supabase:',
+            pedidoError
+          );
+
+        } else {
+
+          pedidoId = pedidoCriado?.id || null;
+
+          console.log(
+            'Pedido criado:',
+            pedidoId
+          );
+
+        }
+
       }
-    } catch(e) {
-      // segue mesmo se não conseguir salvar
+
+    } catch (e) {
+
+      console.error(
+        'Erro ao salvar pedido:',
+        e
+      );
+
     }
 
-    const resp = await fetch('/.netlify/functions/criar-pagamento', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        items: itensPedido
-      }),
-    });
+
+    /*
+     * =====================================================
+     * 2. CRIA O CHECKOUT DO MERCADO PAGO
+     * =====================================================
+     */
+
+    const resp = await fetch(
+      '/.netlify/functions/criar-pagamento',
+      {
+        method: 'POST',
+
+        headers: {
+          'Content-Type': 'application/json'
+        },
+
+        body: JSON.stringify({
+          items: itensPedido,
+
+          // ID do pedido no Supabase
+          pedidoId: pedidoId
+        }),
+      }
+    );
+
 
     const data = await resp.json();
 
+
+    /*
+     * =====================================================
+     * 3. VERIFICA SE O CHECKOUT FOI CRIADO
+     * =====================================================
+     */
+
     if (!resp.ok || !data.init_point){
-      alert('Não deu pra gerar o pagamento. Tenta de novo ou usa o WhatsApp.');
+
+      console.error(
+        'Erro ao criar pagamento:',
+        data
+      );
+
+      alert(
+        'Não deu pra gerar o pagamento. Tenta de novo ou usa o WhatsApp.'
+      );
+
       return;
     }
 
+
+    /*
+     * =====================================================
+     * 4. REDIRECIONA PARA O MERCADO PAGO
+     * =====================================================
+     */
+
     window.location.href = data.init_point;
 
+
   } catch (err) {
-    alert('Erro ao conectar com o pagamento. Tenta de novo em instantes.');
+
+    console.error(
+      'Erro ao conectar com pagamento:',
+      err
+    );
+
+    alert(
+      'Erro ao conectar com o pagamento. Tenta de novo em instantes.'
+    );
+
   } finally {
+
     btn.disabled = false;
+
     btn.textContent = originalText;
+
   }
+
 }
 
 const FAQ = [
