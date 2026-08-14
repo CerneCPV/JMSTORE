@@ -359,37 +359,6 @@
             </div>
             <button class="cat-chip mono" style="cursor:pointer; border:1px solid var(--line-soft); background:none;" onclick="handleLogout()">Sair</button>
           </div>
-          <div id="phonePrompt" style="display:none; background:var(--panel-2); border:1px dashed var(--line); border-radius:10px; padding:18px; margin-bottom:22px;">
-            <p style="font-size:.88rem; margin-bottom:10px;">Falta só uma coisa pra completar seu cadastro: seu telefone.</p>
-            <div style="display:flex; gap:8px; flex-wrap:wrap;">
-              <input id="phoneInput" type="tel" placeholder="(12) 90000-0000" style="flex:1; min-width:160px; background:var(--black); border:1px solid var(--line-soft); color:var(--white); padding:10px 12px; border-radius:7px; font-size:.88rem;">
-              <button class="btn btn-primary" style="padding:10px 18px; font-size:12px;" onclick="salvarTelefone()">Salvar</button>
-            </div>
-            <p id="phoneMsg" style="display:none; font-size:.78rem; color:#ff8a7a; margin-top:8px;"></p>
-          </div>
-
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
-            <h4 style="font-size:.85rem; text-transform:uppercase; letter-spacing:.06em; color:var(--yellow-dim); font-family:var(--font-mono); margin:0;">Meus dados</h4>
-            <button class="cat-chip mono" style="cursor:pointer; border:1px solid var(--line-soft); background:none;" id="btnEditarDados" onclick="toggleEditDados()">Editar</button>
-          </div>
-          <div id="dadosView" style="margin-bottom:26px;">
-            <div class="area-row"><span class="idx mono">01</span><h3 style="font-weight:600;">Nome</h3><span class="tag-mini" id="viewNome">—</span></div>
-            <div class="area-row"><span class="idx mono">02</span><h3 style="font-weight:600;">E-mail</h3><span class="tag-mini" id="viewEmail">—</span></div>
-            <div class="area-row"><span class="idx mono">03</span><h3 style="font-weight:600;">Telefone</h3><span class="tag-mini" id="viewTelefone">—</span></div>
-          </div>
-          <div id="dadosEdit" style="display:none; flex-direction:column; gap:12px; margin-bottom:26px;">
-            <div>
-              <label class="lbl mono" style="display:block; margin-bottom:6px;">Nome</label>
-              <input id="editNome" type="text" style="width:100%; background:var(--black); border:1px solid var(--line-soft); color:var(--white); padding:10px 12px; border-radius:7px; font-size:.88rem;">
-            </div>
-            <div>
-              <label class="lbl mono" style="display:block; margin-bottom:6px;">Telefone</label>
-              <input id="editTelefone" type="tel" style="width:100%; background:var(--black); border:1px solid var(--line-soft); color:var(--white); padding:10px 12px; border-radius:7px; font-size:.88rem;">
-            </div>
-            <button class="btn btn-primary" style="align-self:flex-start; padding:10px 20px; font-size:12px;" onclick="salvarDados()">Salvar alterações</button>
-            <p id="dadosMsg" style="display:none; font-size:.78rem; color:#ff8a7a;"></p>
-          </div>
-
           <h4 style="font-size:.85rem; text-transform:uppercase; letter-spacing:.06em; color:var(--yellow-dim); font-family:var(--font-mono); margin-bottom:14px;">Meus pedidos</h4>
           <div id="dashPedidos"><p style="font-size:.85rem; color:var(--text-dimmer);">Nenhum pedido por aqui ainda. Compras feitas pelo catálogo ou orçamentos fechados no WhatsApp vão aparecer aqui assim que ativarmos essa parte.</p></div>
         </div>
@@ -495,7 +464,7 @@ document.querySelectorAll('#mobileMenu a').forEach(a => a.addEventListener('clic
 
 const FAQ = [
   { topic:'areas', keys:['area','areas','atua','servico','serviços','o que voces fazem','o que vocês fazem','o que a jm faz','quais sao os servicos','quais são os serviços','o que jm oferece','que tipo de servico'],
-    a:['Trabalhamos com 4 áreas: elétrica, alarmes, câmeras e ar condicionado — instalação, manutenção e material pra cada uma delas.','A JM cobre elétrica, alarmes, câmeras e ar condicionado. É só me falar qual área te interessa que eu detalho.','Cuidamos de elétrica, alarme, câmera e ar condicionado — praticamente tudo, menos o boleto da luz 😅 Qual dessas te interessa?'] },
+    a:['Trabalhamos com 4 áreas: elétrica, alarmes, câmeras e ar condicionado — instalação, manutenção e material pra cada uma delas.','A JM cobre elétrica, alarmes, câmeras e ar condicionado. É só me falar qual área te interessa que eu detalho.'] },
   { topic:'eletrica', keys:['eletrica','elétrica','eletricista','fiacao','fiação','fiaçao','quadro de disjuntor','quadro eletrico','padrao de entrada','padrão de entrada','curto circuito','curto-circuito','chuveiro','disjuntor','falta de energia','queda de energia','fio','fiacao queimada','instalacao eletrica','instalação elétrica'],
     a:['Na parte elétrica fazemos instalação residencial e comercial, troca de quadro, padrão de entrada, manutenção e laudos. Quer que eu já puxe o orçamento no WhatsApp?'] },
   { topic:'alarmes', keys:['alarme','alarmes','sensor','monitoramento','central de alarme','alarme residencial','alarme comercial','sensor de presenca','sensor de presença','sirene'],
@@ -505,7 +474,7 @@ const FAQ = [
   { topic:'ar', keys:['ar condicionado','split','ar-condicionado','btus','higienizacao','higienização','inverter','nao esta gelando','não está gelando','gelando pouco','vazando agua','vazando água','pingando','manutencao de ar','manutenção de ar','instalar ar'],
     a:['Instalamos, damos manutenção e higienizamos split e multi-split, residencial e comercial. Sabe mais ou menos quantos BTUs o seu aparelho tem?'] },
   { topic:'pagamento', keys:['pagamento','pagar','forma de pagamento','cartao','cartão','pix','parcela','parcelado','boleto','transferencia','transferência','debito','débito','credito','crédito','a vista','à vista'],
-    a:['O pagamento é combinado direto no WhatsApp na hora de fechar o pedido ou serviço — aceitamos Pix e outras formas a combinar.','Aceitamos Pix e outras formas — combina tudo direto no WhatsApp na hora de fechar. Nada de pombo-correio, fica tranquilo.'] },
+    a:['O pagamento é combinado direto no WhatsApp na hora de fechar o pedido ou serviço — aceitamos Pix e outras formas a combinar.'] },
   { topic:'prazo', keys:['prazo','entrega','quando fica','demora','tempo de','quanto tempo','chega quando','prazo de entrega','prazo de instalacao','prazo de instalação','quanto demora'],
     a:['O prazo varia por tipo de serviço ou produto. Me conta o que você precisa que eu já te encaminho pro WhatsApp com essa pergunta certinha.'] },
   { topic:'regiao', keys:['atende','regiao','região','cidade','onde fica','local','vem ate','vem até','atende minha cidade','atende meu bairro','voces atendem','vocês atendem','area de atendimento'],
@@ -532,21 +501,19 @@ const FAQ = [
     a:['Isso parece coisa pra resolver rápido — melhor já chamar a equipe no WhatsApp pra te atender direto, principalmente se envolver risco (cheiro de queimado, fio exposto, curto). Quer que eu te leve pra lá agora?'] },
   { topic:'trabalhe_conosco', keys:['vaga','emprego','trabalhar com voces','trabalhar com vocês','curriculo','currículo','contratando','vaga de emprego'],
     a:['Pra assuntos de vaga e currículo, o melhor caminho é chamar direto no WhatsApp ou mandar mensagem no Instagram @jmeletrica.cpv.'] },
-  { topic:'piada', keys:['conta uma piada','me conta uma piada','sabe alguma piada','conta uma piada eletrica','faz rir','me faz rir','sabe uma piada'],
-    a:['Por que o eletricista nunca perde no truco? Porque ele sempre sabe quando tem um "curto" escondido. 😄','Qual é o super-herói mais econômico? O Homem de Ferro, ele nem usa disjuntor.','Sabe por que a lâmpada foi mal na escola? Porque ela vivia apagada. Enfim, voltando ao assunto — posso ajudar com mais alguma coisa?'] },
 ];
 
 const GREETINGS = [
   { keys:['bom dia','boa tarde','boa noite','oi','oie','oii','oiii','oioi','ola','olá','eae','opa','e ai','e aí','fala','falae','salve','coe','suave'],
-    a:['Oi! Tudo bem? Em que posso ajudar — elétrica, alarmes, câmeras ou ar condicionado?','Olá! Como posso ajudar hoje?','Oi, seja bem-vindo! No que posso ajudar?','E aí! Chegou na hora certa, tava aqui só zerando o disjuntor 😄 Como posso ajudar?'] },
+    a:['Oi! Tudo bem? Em que posso ajudar — elétrica, alarmes, câmeras ou ar condicionado?','Olá! Como posso ajudar hoje?','Oi, seja bem-vindo! No que posso ajudar?'] },
   { keys:['tudo bem','tudo bom','como vai','beleza contigo','como voce esta','como você está','como vc esta','como vc ta','voce esta bem','você está bem','vc ta bem','de boa','tudo certo','tudo tranquilo','tudo joia','tudo suave','como anda','como ta indo','como tá indo','firmeza'],
-    a:['Tudo certo por aqui, obrigado por perguntar! E você, precisa de ajuda com algo específico?','Tô bem, valeu por perguntar! Em que posso te ajudar?','Suave, correndo 220V hoje 😄 E você, precisa de alguma coisa?'] },
+    a:['Tudo certo por aqui, obrigado por perguntar! E você, precisa de ajuda com algo específico?','Tô bem, valeu por perguntar! Em que posso te ajudar?'] },
   { keys:['obrigad','valeu','vlw','blz','beleza','entendi','show','maravilha','perfeito','brigado','brigada','agradecido','agradecida','gratidao','gratidão','ajudou muito','thanks'],
-    a:['Disponha! Qualquer outra dúvida é só perguntar.','Fico à disposição. Precisando de mais alguma coisa é só chamar.','Que bom que ajudou! Mais alguma coisa?','Isso aí! Fico feliz em ajudar — grita se precisar de mais alguma coisa.'] },
+    a:['Disponha! Qualquer outra dúvida é só perguntar.','Fico à disposição. Precisando de mais alguma coisa é só chamar.','Que bom que ajudou! Mais alguma coisa?'] },
   { keys:['tchau','ate mais','até mais','falou','flw','ate logo','até logo','fui','indo','ate breve','até breve','nos falamos','bjs','abraço'],
-    a:['Até mais! Se precisar, é só voltar aqui ou chamar no WhatsApp.','Falou! Qualquer coisa tô aqui, sempre ligado (literalmente).'] },
+    a:['Até mais! Se precisar, é só voltar aqui ou chamar no WhatsApp.'] },
   { keys:['quem e voce','quem é você','voce e um robo','você é um robô','voce e humano','é um bot','vc e ia','vc tem nome','qual seu nome','qual e seu nome','quem te criou','vc e um chatbot','você é um chatbot','vc e real'],
-    a:['Sou o Watt, o assistente virtual da JM — feito pra tirar dúvidas rápidas. Pra falar com alguém da equipe de verdade, te levo direto pro WhatsApp.','Watt aqui, seu assistente virtual — o nome já é uma piadinha de elétrica, percebeu? 😄 Posso ajudar com dúvidas rápidas, e pra falar com gente de verdade te levo pro WhatsApp.'] },
+    a:['Sou o Watt, o assistente virtual da JM — feito pra tirar dúvidas rápidas. Pra falar com alguém da equipe de verdade, te levo direto pro WhatsApp.'] },
   { keys:['obg','ok','blz entao','tá bom','ta bom'],
     a:['Tranquilo! Qualquer coisa é só chamar.'] },
 ];
@@ -556,7 +523,6 @@ const CHAT_QUICK = ['Quais áreas vocês atendem?', 'Como funciona o pagamento?'
 const CLARIFY_MSGS = [
   'Não peguei bem essa — pode explicar de outro jeito? Posso falar sobre elétrica, alarmes, câmeras, ar condicionado, catálogo, pagamento e orçamento.',
   'Hmm, não entendi direito. Você quer saber sobre algum dos nossos serviços ou sobre um produto do catálogo?',
-  'Essa me deixou meio "sem sinal" aqui 😅 Reformula pra mim? Posso ajudar com elétrica, alarmes, câmeras, ar condicionado ou o catálogo.',
 ];
 
 function toggleChat(){
@@ -801,59 +767,7 @@ async function showDashboard(user){
   const telefone = user.user_metadata?.phone || '';
   document.getElementById('dashNome').textContent = 'Olá, ' + nome;
   document.getElementById('dashContato').textContent = user.email + (telefone ? ' · ' + telefone : '');
-  document.getElementById('phonePrompt').style.display = telefone ? 'none' : 'block';
-
-  document.getElementById('viewNome').textContent = nome;
-  document.getElementById('viewEmail').textContent = user.email;
-  document.getElementById('viewTelefone').textContent = telefone || 'não informado';
-  document.getElementById('editNome').value = nome;
-  document.getElementById('editTelefone').value = telefone;
-
   carregarPedidos(user.id);
-}
-
-function toggleEditDados(){
-  const editing = document.getElementById('dadosEdit').style.display === 'flex';
-  document.getElementById('dadosEdit').style.display = editing ? 'none' : 'flex';
-  document.getElementById('dadosView').style.display = editing ? 'block' : 'none';
-  document.getElementById('btnEditarDados').textContent = editing ? 'Editar' : 'Cancelar';
-  document.getElementById('dadosMsg').style.display = 'none';
-}
-
-async function salvarDados(){
-  const nome = document.getElementById('editNome').value.trim();
-  const telefone = document.getElementById('editTelefone').value.trim();
-  const msg = document.getElementById('dadosMsg');
-  if (!nome || !telefone){
-    msg.textContent = 'Preencha nome e telefone.';
-    msg.style.display = 'block';
-    return;
-  }
-  const { data, error } = await sb.auth.updateUser({ data: { full_name: nome, phone: telefone } });
-  if (error){
-    msg.textContent = 'Não deu pra salvar, tenta de novo.';
-    msg.style.display = 'block';
-    return;
-  }
-  toggleEditDados();
-  await showDashboard(data.user);
-}
-
-async function salvarTelefone(){
-  const phone = document.getElementById('phoneInput').value.trim();
-  const msg = document.getElementById('phoneMsg');
-  if (!phone){
-    msg.textContent = 'Digite um telefone válido.';
-    msg.style.display = 'block';
-    return;
-  }
-  const { data, error } = await sb.auth.updateUser({ data: { phone } });
-  if (error){
-    msg.textContent = 'Não deu pra salvar, tenta de novo.';
-    msg.style.display = 'block';
-    return;
-  }
-  await showDashboard(data.user);
 }
 
 async function handleLogout(){
