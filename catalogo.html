@@ -582,7 +582,11 @@ async function checkout(){
 
 async function pagarComMercadoPago(){
   const cart = getCart();
-  if (cart.length === 0){ showToast('Seu carrinho está vazio'); return; }
+
+  if (cart.length === 0){
+    alert('Seu carrinho está vazio');
+    return;
+  }
 
   const btn = document.getElementById('btnPagar');
   btn.disabled = true;
@@ -591,19 +595,29 @@ async function pagarComMercadoPago(){
 
   const itensPedido = [];
   let total = 0;
+
   cart.forEach(item => {
     const p = PRODUCTS.find(x => x.id === item.id);
     if (!p) return;
+
     const price = cartItemPrice(item);
     total += price * item.qty;
-    const label = item.variantLabel ? `${p.name} (${item.variantLabel})` : p.name;
-    itensPedido.push({ nome: label, qtd: item.qty, preco: price });
+
+    const label = item.variantLabel
+      ? `${p.name} (${item.variantLabel})`
+      : p.name;
+
+    itensPedido.push({
+      nome: label,
+      qtd: item.qty,
+      preco: price
+    });
   });
 
   try {
-    /* se o cliente estiver logado, salva o pedido como "aguardando pagamento" */
     try {
       const { data } = await sb.auth.getSession();
+
       if (data.session){
         await sb.from('pedidos').insert({
           user_id: data.session.user.id,
@@ -612,23 +626,31 @@ async function pagarComMercadoPago(){
           status: 'aguardando pagamento',
         });
       }
-    } catch(e) { /* segue mesmo se não conseguir salvar */ }
+    } catch(e) {
+      // segue mesmo se não conseguir salvar
+    }
 
     const resp = await fetch('/.netlify/functions/criar-pagamento', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ items: itensPedido }),
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        items: itensPedido
+      }),
     });
+
     const data = await resp.json();
 
     if (!resp.ok || !data.init_point){
-      showToast('Não deu pra gerar o pagamento. Tenta de novo ou usa o WhatsApp.');
+      alert('Não deu pra gerar o pagamento. Tenta de novo ou usa o WhatsApp.');
       return;
     }
 
     window.location.href = data.init_point;
+
   } catch (err) {
-    showToast('Erro ao conectar com o pagamento. Tenta de novo em instantes.');
+    alert('Erro ao conectar com o pagamento. Tenta de novo em instantes.');
   } finally {
     btn.disabled = false;
     btn.textContent = originalText;
